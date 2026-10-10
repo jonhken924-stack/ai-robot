@@ -1,0 +1,358 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberBot | Ethical Hacking Tutor</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #07111d;
+  color: #e8f5ff;
+}
+
+header {
+  background: #0b1b2b;
+  padding: 20px;
+  text-align: center;
+  border-bottom: 2px solid #00ff9c;
+}
+
+header h1 {
+  color: #00ff9c;
+  margin: 0;
+}
+
+header p {
+  color: #a6bfd1;
+}
+
+.container {
+  width: 92%;
+  max-width: 1100px;
+  margin: 25px auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 18px;
+}
+
+.card {
+  background: #102438;
+  border: 1px solid #1d4055;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.card h2 {
+  color: #00ff9c;
+}
+
+button {
+  background: #00ff9c;
+  color: #06131c;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+button:hover {
+  background: #72ffc3;
+}
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  background: #071522;
+  border: 1px solid #31536b;
+  color: white;
+  border-radius: 6px;
+}
+
+#chatBox {
+  height: 280px;
+  overflow-y: auto;
+  background: #06101a;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #234258;
+}
+
+.message {
+  margin: 10px 0;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.user {
+  color: #00ff9c;
+}
+
+.bot {
+  color: #d4e9ff;
+}
+
+footer {
+  text-align: center;
+  padding: 25px;
+  color: #8aa6b9;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🤖 CyberBot</h1>
+  <p>Your Personal Ethical Hacking & Cybersecurity Tutor</p>
+</header>
+
+<div class="container">
+
+  <section class="card">
+    <h2>💬 Talk to CyberBot</h2>
+    <p>Ask questions about cybersecurity and learn step by step.</p>
+
+    <div id="chatBox" aria-live="polite">
+      <div class="message bot">
+        <strong>CyberBot:</strong> Hello, hacker-in-training!
+        I can teach you networking, Linux, ethical hacking,
+        password security, and web security. What would you like to learn?
+      </div>
+    </div>
+
+    <input id="question"
+      placeholder="Ask me about ethical hacking..."
+      aria-label="Your question"
+      onkeydown="if(event.key==='Enter') askBot()">
+
+    <button onclick="askBot()">Send Message</button>
+  </section>
+
+  <br>
+
+  <h2>📚 Learning Academy</h2>
+
+  <div class="grid">
+
+    <div class="card">
+      <h2>🌐 Networking</h2>
+      <p>Learn IP addresses, ports, DNS, HTTP, and TCP/IP.</p>
+      <button onclick="lesson('networking')">Start Lesson</button>
+    </div>
+
+    <div class="card">
+      <h2>🐧 Linux</h2>
+      <p>Learn the terminal, files, permissions, and shell basics.</p>
+      <button onclick="lesson('linux')">Start Lesson</button>
+    </div>
+
+    <div class="card">
+      <h2>🛡️ Ethical Hacking</h2>
+      <p>Study reconnaissance, vulnerability assessment, and defenses.</p>
+      <button onclick="lesson('ethical hacking')">Start Lesson</button>
+    </div>
+
+    <div class="card">
+      <h2>🔐 Password Security</h2>
+      <p>Learn strong passwords, hashing, salting, and MFA.</p>
+      <button onclick="lesson('passwords')">Start Lesson</button>
+    </div>
+
+    <div class="card">
+      <h2>💻 Web Security</h2>
+      <p>Explore SQL injection, XSS, secure coding, and safe test labs.</p>
+      <button onclick="lesson('web security')">Start Lesson</button>
+    </div>
+
+    <div class="card">
+      <h2>🧪 Practice Lab</h2>
+      <p>Practice identifying weaknesses in systems you own or have permission to test.</p>
+      <button onclick="lesson('practice lab')">Open Lab Guide</button>
+    </div>
+
+  </div>
+
+  <br>
+
+  <section class="card">
+    <h2>🔑 Password Strength Checker</h2>
+    <p>Test a sample password locally. Avoid entering real passwords.</p>
+
+    <input type="password" id="password"
+      placeholder="Enter a sample password">
+
+    <button onclick="checkPassword()">Check Strength</button>
+    <p id="passwordResult" aria-live="polite"></p>
+  </section>
+
+</div>
+
+<footer>
+  CyberBot © 2026 | Learn ethically. Test with permission.
+</footer>
+
+<script>
+const lessons = {
+  networking: `
+    <b>Lesson 1: Networking</b><br><br>
+    • IP address: identifies a device on a network.<br>
+    • Port: identifies a network service.<br>
+    • DNS: translates domain names into IP addresses.<br>
+    • HTTP/HTTPS: protocols used by websites.<br><br>
+    <b>Challenge:</b> Explain the difference between an IP address and a port.
+  `,
+
+  linux: `
+    <b>Lesson 1: Linux Basics</b><br><br>
+    <code>pwd</code> — show your current directory.<br>
+    <code>ls</code> — list files.<br>
+    <code>cd</code> — change directories.<br>
+    <code>whoami</code> — display your current username.<br>
+    <code>mkdir lab</code> — create a directory named lab.<br><br>
+    Practice these commands on your own computer or a virtual machine.
+  `,
+
+  "ethical hacking": `
+    <b>Lesson 1: Ethical Hacking</b><br><br>
+    1. Get written authorization.<br>
+    2. Define the systems and scope.<br>
+    3. Identify exposed services.<br>
+    4. Assess vulnerabilities in a safe environment.<br>
+    5. Document findings and recommend fixes.<br><br>
+    Never test systems without permission.
+  `,
+
+  passwords: `
+    <b>Lesson 1: Password Security</b><br><br>
+    • Use unique passwords for every account.<br>
+    • Use a reputable password manager.<br>
+    • Enable multifactor authentication (MFA).<br>
+    • Store passwords using modern salted password hashes.<br>
+    • Learn password cracking only with synthetic hashes or authorized lab data.<br><br>
+    <b>Challenge:</b> Why should websites never store passwords in plain text?
+  `,
+
+  "web security": `
+    <b>Lesson 1: Web Security</b><br><br>
+    SQL injection occurs when unsafe input changes a database query.<br>
+    XSS occurs when untrusted content executes as script in a browser.<br><br>
+    Defenses include parameterized SQL queries, contextual output
+    encoding, input validation, and secure session management.<br><br>
+    Practice using intentionally vulnerable applications in isolated labs.
+  `,
+
+  "practice lab": `
+    <b>Your Safe Practice Lab</b><br><br>
+    • Install a virtual machine.<br>
+    • Use a deliberately vulnerable training application such as OWASP Juice Shop.<br>
+    • Keep vulnerable systems isolated from public networks.<br>
+    • Record each finding and its fix.<br><br>
+    Start by learning how to identify and correct one security weakness.
+  `
+};
+
+function addMessage(sender, text, className) {
+  const box = document.getElementById("chatBox");
+  const message = document.createElement("div");
+  message.className = "message " + className;
+
+  const label = document.createElement("strong");
+  label.textContent = sender + ": ";
+
+  const content = document.createElement("span");
+  content.textContent = text;
+
+  message.appendChild(label);
+  message.appendChild(content);
+  box.appendChild(message);
+  box.scrollTop = box.scrollHeight;
+}
+
+function lesson(topic) {
+  const box = document.getElementById("chatBox");
+  const message = document.createElement("div");
+  message.className = "message bot";
+  message.innerHTML = lessons[topic] || "Lesson not found.";
+  box.appendChild(message);
+  box.scrollTop = box.scrollHeight;
+}
+
+function askBot() {
+  const input = document.getElementById("question");
+  const q = input.value.trim().toLowerCase();
+
+  if (!q) return;
+
+  addMessage("You", input.value.trim(), "user");
+  input.value = "";
+
+  let answer =
+    "I am a basic offline tutor. Try asking about networking, Linux, " +
+    "ethical hacking, passwords, or web security.";
+
+  if (q.includes("hello") || q.includes("hi")) {
+    answer = "Hello! Choose a lesson from the Learning Academy to begin.";
+  } else if (q.includes("network") || q.includes("ip address") ||
+             q.includes("port")) {
+    answer = "Networking teaches you how devices communicate. Start with IP addresses, DNS, TCP, UDP, and ports.";
+  } else if (q.includes("linux") || q.includes("terminal") ||
+             q.includes("command")) {
+    answer = "Start with pwd, ls, cd, whoami, and mkdir. Practice inside your own lab.";
+  } else if (q.includes("hack") || q.includes("crack")) {
+    answer = "Ethical hacking means testing with permission. I can teach safe vulnerability assessment, password hashing, and authorized lab exercises.";
+  } else if (q.includes("password") || q.includes("hash")) {
+    answer = "A hash is a one-way transformation. Passwords should use a unique salt and a password hashing algorithm such as Argon2id, scrypt, or bcrypt.";
+  } else if (q.includes("sql") || q.includes("xss") ||
+             q.includes("website")) {
+    answer = "Web security starts with parameterized SQL queries, output encoding, safe session handling, and testing in authorized practice labs.";
+  } else if (q.includes("robot") || q.includes("ai")) {
+    answer = "This version uses simple JavaScript rules, not AI. You can connect it to a secure AI backend to enable open-ended tutoring.";
+  }
+
+  setTimeout(() => addMessage("CyberBot", answer, "bot"), 250);
+}
+
+function checkPassword() {
+  const p = document.getElementById("password").value;
+  const result = document.getElementById("passwordResult");
+
+  if (!p) {
+    result.textContent = "Enter a sample password first.";
+    return;
+  }
+
+  let score = 0;
+  if (p.length >= 12) score++;
+  if (/[a-z]/.test(p) && /[A-Z]/.test(p)) score++;
+  if (/[0-9]/.test(p)) score++;
+  if (/[^A-Za-z0-9]/.test(p)) score++;
+
+  const labels = [
+    "Weak — use a longer, unique password.",
+    "Fair — improve length and uniqueness.",
+    "Moderate — consider a longer passphrase.",
+    "Strong by these basic checks.",
+    "Strong by these basic checks."
+  ];
+
+  result.textContent = labels[score];
+}
+</script>
+
+</body>
+  </html>
+  
